@@ -1,4 +1,4 @@
 #!/bin/bash
 
 killall node
-sh ./deploy.sh
+bash ./deploy.sh
