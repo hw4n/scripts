@@ -1,5 +1,6 @@
 require("dotenv").config();
 const AWS = require("aws-sdk");
+const { NodeSSH } = require("node-ssh");
 
 // ~/.aws/credentials
 // [default]
@@ -17,30 +18,40 @@ const instance = {
 
 const firstArg = process.argv[2];
 
-if (firstArg === "stop") {
-  ec2.stopInstances(instance, (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(data.StoppingInstances[0]);
-    }
-  });
-} else if (firstArg === "start") {
+if (firstArg === "start") {
   ec2.startInstances(instance, (err, data) => {
     if (err) {
       console.log(err);
     } else {
       console.log(data.StartingInstances[0]);
     }
-  })
-} else {
-  ec2.describeInstances(instance, (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const ec2State = data.Reservations[0].Instances[0].State;
-      console.log(ec2State);
+  });
+  return;
+}
+
+if (firstArg === "stop") {
+  const ssh = new NodeSSH();
+  ssh.connect({
+    host: process.env.SSH_HOST,
+    username: process.env.SSH_USERNAME,
+    privateKey: process.env.SSH_PRIVATE,
+    readyTimeout: 3000
+  }).then(() => {
+    ssh.execCommand("./stop.sh");
+    console.log("ok");
+  }).catch(() => {
+    console.log("Instance timed out, probably already stopped");
+  });
+}
+
+ec2.describeInstances(instance, (err, data) => {
+  if (err) {
+    console.log(err);
+  } else {
+    const ec2State = data.Reservations[0].Instances[0].State;
+    console.log(ec2State);
+    if (!firstArg) {
       console.log("Please run script again with an argument: start, stop");
     }
-  })
-}
+  }
+});
