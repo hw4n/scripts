@@ -10,9 +10,10 @@ const { NodeSSH } = require("node-ssh");
 AWS.config.update({region: "ap-northeast-2"});
 
 const ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
+
 const instance = {
   InstanceIds: [
-    process.env.INSTANCE_ID
+    process.argv[3] || process.env.INSTANCE_ID
   ]
 };
 
@@ -30,9 +31,10 @@ if (firstArg === "start") {
 }
 
 if (firstArg === "stop") {
+  console.log(process.argv[4] || process.env.SSH_HOST);
   const ssh = new NodeSSH();
   ssh.connect({
-    host: process.env.SSH_HOST,
+    host: process.argv[3] || process.env.SSH_HOST,
     username: process.env.SSH_USERNAME,
     privateKey: process.env.SSH_PRIVATE,
     readyTimeout: 3000
