@@ -31,10 +31,9 @@ if (firstArg === "start") {
 }
 
 if (firstArg === "stop") {
-  console.log(process.argv[4] || process.env.SSH_HOST);
   const ssh = new NodeSSH();
   ssh.connect({
-    host: process.argv[3] || process.env.SSH_HOST,
+    host: process.argv[4] || process.env.SSH_HOST,
     username: process.env.SSH_USERNAME,
     privateKey: process.env.SSH_PRIVATE,
     readyTimeout: 3000
