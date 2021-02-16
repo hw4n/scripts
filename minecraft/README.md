@@ -135,17 +135,17 @@ AWS instance id looks like this: ``i-xxxxxxxxxxxxxxxxx`` if you don't know
 ### Executing script inside WSL on Windows
 This part is probably only for me but the point is that I will execute script located inside the WSL
 
-If target server is different with ``.env`` pass ``<INSTANCE ID>`` and ``<REMOTE IP>`` for arguments for wsl
+If target server is different with ``.env`` pass ``'INSTANCE ID'`` and ``'REMOTE IP'`` for arguments for wsl
 
 ``start.ps1``
 ```ps
-wsl bash -c "cd ~/projects/scripts/minecraft/aws-control; node index.js start <INSTANCE ID>"
+wsl bash -c "cd ~/projects/scripts/minecraft/aws-control; node index.js start 'INSTANCE ID'"
 Start-Sleep -s 3
 ```
 
 ``shutdown.ps1``
 ```ps
-wsl bash -c "cd ~/projects/scripts/minecraft/aws-control; node index.js stop <INSTANCE ID> <REMOTE IP>"
+wsl bash -c "cd ~/projects/scripts/minecraft/aws-control; node index.js stop 'INSTANCE ID' 'REMOTE IP'"
 Start-Sleep -s 3
 ```
 
