@@ -1,3 +1,3 @@
 #!/bin/bash
   
-ls -al ~/minecraft/mods
+find ./minecraft/mods/*.jar -printf "%f\n"
