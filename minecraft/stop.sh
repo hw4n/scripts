@@ -8,4 +8,5 @@ do
   echo "Waiting for Java to shut down"
 done
 
-sudo shutdown -h now
+sudo shutdown -h +1
+exit
